@@ -37,9 +37,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <SidebarProvider defaultOpen={false}>
-            <main className="w-full">{children}</main>
-          </SidebarProvider>
+          <main className="w-full">{children}</main>
         </ThemeProvider>
       </body>
     </html>
