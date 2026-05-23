@@ -1,7 +1,8 @@
 "use server";
-import { Register } from "@/interface";
+import { Login, Register } from "@/interface";
 import axios from "axios";
 import { cookies } from "next/headers";
+import { success } from "zod";
 
 const GO_API_URL = process.env.GO_API_URL;
 
@@ -46,4 +47,57 @@ export async function registr(payload: Register) {
 
     return { success: true, message: "Login successful." };
   } catch {}
+}
+
+export async function login(payload: Login) {
+  try {
+    if (!payload.email || !payload.password) {
+      return {
+        success: false,
+        message: "Valid not required",
+      };
+    }
+    const response = await axios.post(`${GO_API_URL}/login`, payload);
+
+    let token = response.data?.token;
+    if (!token) {
+      const setCookie = response.headers["set-cookie"];
+      if (setCookie && Array.isArray(setCookie)) {
+        const jwtCookie = setCookie.find((c) => c.startsWith("jwt="));
+        if (jwtCookie) {
+          token = jwtCookie.split(";")[0].split("=")[1];
+        }
+      }
+    }
+
+    if (!token) {
+      return { success: false, message: "No token received from server." };
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24,
+    });
+
+    return { success: true, message: "Login successful." };
+  } catch {}
+}
+
+export async function logout() {
+  try {
+    await axios.post(`${GO_API_URL}/logout`);
+    return {
+      success: true,
+      message: "user logouted",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Failed logout user",
+    };
+  }
 }
