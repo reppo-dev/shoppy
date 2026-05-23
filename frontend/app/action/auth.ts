@@ -2,7 +2,6 @@
 import { Login, Register } from "@/interface";
 import axios from "axios";
 import { cookies } from "next/headers";
-import { success } from "zod";
 
 const GO_API_URL = process.env.GO_API_URL;
 
@@ -45,8 +44,13 @@ export async function registr(payload: Register) {
       maxAge: 60 * 60 * 24,
     });
 
-    return { success: true, message: "Login successful." };
-  } catch {}
+    return { success: true, message: "Signup successful." };
+  } catch {
+    return {
+      success: false,
+      message: "Failed to sign up",
+    };
+  }
 }
 
 export async function login(payload: Login) {
@@ -84,12 +88,27 @@ export async function login(payload: Login) {
     });
 
     return { success: true, message: "Login successful." };
-  } catch {}
+  } catch {
+    return {
+      success: false,
+      message: "Failed to login",
+    };
+  }
 }
 
 export async function logout() {
   try {
-    await axios.post(`${GO_API_URL}/logout`);
+    const response = await axios.post(
+      `${GO_API_URL}/logout`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+
+    const cookieStore = await cookies();
+    cookieStore.delete("jwt");
+    console.log("Logout response:", response.data);
     return {
       success: true,
       message: "user logouted",
