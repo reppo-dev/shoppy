@@ -1,6 +1,8 @@
 package databases
 
 import (
+	"backend/models"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,5 +20,5 @@ func Connect() {
 
 	DB = db
 
-	db.AutoMigrate()
+	db.AutoMigrate(&models.User{})
 }
