@@ -91,7 +91,7 @@ export async function login(payload: Login) {
   } catch {
     return {
       success: false,
-      message: "Failed to login",
+      message: "email or password is wrong",
     };
   }
 }

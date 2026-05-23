@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cookies } from "next/headers";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +42,7 @@ export default async function RootLayout({
         >
           <Header />
           <main className="w-full">{children}</main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
