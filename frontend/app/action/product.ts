@@ -1,7 +1,6 @@
 "use server";
 
 import axios from "axios";
-import { getUserInfo } from "./getUserId";
 import { Product } from "@/interface";
 
 const GO_API_URL = process.env.GO_API_URL;
@@ -59,6 +58,43 @@ export async function createProduct(payload: Product) {
     return {
       success: false,
       message: "Failed create product",
+    };
+  }
+}
+
+export async function updateProduct(payload: Product, id: number) {
+  try {
+    if (
+      !payload.name ||
+      !payload.price ||
+      !payload.description ||
+      !payload.image
+    ) {
+      return { success: false, message: "Valid not required" };
+    }
+    await axios.put(`${GO_API_URL}//updateproduct/${id}`, payload);
+
+    return {
+      success: true,
+      message: "updated product",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Failed update product",
+    };
+  }
+}
+
+export async function deleteProduct(id: number) {
+  try {
+    await axios.delete(`${GO_API_URL}/deleteproduct/${id}`);
+
+    return { success: true, message: "Success to delete product" };
+  } catch {
+    return {
+      success: false,
+      message: "Failed delete product",
     };
   }
 }

@@ -92,7 +92,6 @@ func UpdateProduct(c *fiber.Ctx) error {
 	product.Name = data.Name
 	product.Description = data.Description
 	product.Image = data.Image
-	product.UserID = data.UserID
 	product.Price = data.Price
 
 	if err:=databases.DB.WithContext(ctx).Save(&product).Error; err!=nil{
