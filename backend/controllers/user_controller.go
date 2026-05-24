@@ -118,4 +118,16 @@ func User(c *fiber.Ctx) error {
 	if cookie == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error":"Invalid or expired token"})
 	}
+
+	id , err := utils.ParseJwt(cookie)
+	if err !=nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error":"Invalid or expired token"})
+	}
+	var user models.User
+
+	if err:= databases.DB.WithContext(ctx).First(&user,id).Error; err!=nil{
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error":"Failed find user"})
+	}
+
+	return c.JSON(user)
 }
