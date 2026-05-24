@@ -26,7 +26,7 @@ const ButtonLogout = () => {
     }
   }
   return (
-    <Button onClick={handler} disabled={loading}>
+    <Button onClick={handler} variant={"outline"} disabled={loading}>
       Logout
     </Button>
   );

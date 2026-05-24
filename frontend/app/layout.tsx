@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cookies } from "next/headers";
 import { Toaster } from "sonner";
@@ -40,7 +39,6 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
           <main className="w-full">{children}</main>
           <Toaster />
         </ThemeProvider>
