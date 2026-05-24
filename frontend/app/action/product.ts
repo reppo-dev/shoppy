@@ -1,6 +1,7 @@
 "use server";
 
 import axios from "axios";
+import { getUserInfo } from "./getUserId";
 
 const GO_API_URL = process.env.GO_API_URL;
 
@@ -16,6 +17,22 @@ export async function allProducts() {
     return {
       success: false,
       message: "Failed to get all products",
+    };
+  }
+}
+
+export async function getProduct(id: number) {
+  try {
+    const response = await axios.get(`${GO_API_URL}/getproduct/${id}`);
+
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Failed get product",
     };
   }
 }
