@@ -67,3 +67,37 @@ func CreateProduct(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"message":"create product success"})
 }
+
+func UpdateProduct(c *fiber.Ctx) error {
+	ctx,cancel:= context.WithTimeout(context.Background(),5*time.Second)
+	defer cancel()
+
+	id,err := strconv.Atoi(c.Params("id"))
+	if err!=nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request id"})
+	}
+
+	var data models.ProductInfo
+
+	if err:= c.BodyParser(&data);err!=nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request body"})
+	}
+
+	var product models.Product
+
+	if err := databases.DB.WithContext(ctx).First(&product,id).Error; err!=nil{
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error":"Failed find product"})
+	}
+
+	product.Name = data.Name
+	product.Description = data.Description
+	product.Image = data.Image
+	product.UserID = data.UserID
+	product.Price = data.Price
+
+	if err:=databases.DB.WithContext(ctx).Save(&product).Error; err!=nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed update product"})
+	}
+
+	return c.JSON(fiber.Map{"message":"update product success"})
+}
