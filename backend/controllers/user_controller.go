@@ -109,3 +109,13 @@ func Logout(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"message":"Logout success"})
 }
+
+func User(c *fiber.Ctx) error {
+	ctx,cancel := context.WithTimeout(context.Background(),5*time.Second)
+	defer cancel()
+	cookie := c.Cookies("jwt")
+
+	if cookie == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error":"Invalid or expired token"})
+	}
+}
