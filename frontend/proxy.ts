@@ -5,10 +5,10 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isPrivateRoute =
-    pathname.startsWith("/customer") || pathname.startsWith("/admin");
+    pathname.startsWith("/favorite") || pathname.startsWith("/admin");
 
   const isAuthRoute =
-    pathname.startsWith("/login") || pathname.startsWith("/register");
+    pathname.startsWith("/login") || pathname.startsWith("/signup");
 
   const token = request.cookies.get("jwt")?.value;
 
