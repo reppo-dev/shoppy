@@ -9,3 +9,11 @@ export interface Login {
   email: string;
   password: string;
 }
+
+export interface Product {
+  name: string;
+  image: string;
+  description: string;
+  price: number;
+  user_id: number;
+}
