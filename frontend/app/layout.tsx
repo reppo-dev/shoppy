@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cookies } from "next/headers";
 import { Toaster } from "sonner";
+import { getUserInfo } from "./action/getUserId";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,9 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const token = cookieStore.get("jwt")?.value;
   console.log(token);
+
+  const userId = await getUserInfo();
+  console.log(`userID:${userId.userId}`);
   return (
     <html lang="en" suppressHydrationWarning>
       <body
