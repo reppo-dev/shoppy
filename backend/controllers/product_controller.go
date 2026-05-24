@@ -42,3 +42,28 @@ func GetProduct(c *fiber.Ctx) error {
 
 	return c.JSON(product)
 }
+
+func CreateProduct(c *fiber.Ctx) error {
+	ctx,cancel := context.WithTimeout(context.Background(),5*time.Second)
+	defer cancel()
+
+	var data models.ProductInfo
+
+	if err := c.BodyParser(&data);err!=nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request body"})
+	}
+
+	product := models.Product{
+		Name: data.Name,
+		Image: data.Image,
+		Description: data.Description,
+		Price: data.Price,
+		UserID: data.UserID,
+	}
+
+	if err := databases.DB.WithContext(ctx).Create(&product).Error;err!=nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed create product"})
+	}
+
+	return c.JSON(fiber.Map{"message":"create product success"})
+}
