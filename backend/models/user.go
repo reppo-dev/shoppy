@@ -9,4 +9,5 @@ type User struct {
 	LastName  string `json:"last_name"`
 	Email     string `json:"email" gorm:"uniqueIndex;not null"`
 	Password  string `json:"-"`
+	Products  []Product `json:"products,omitempty" gorm:"foreignKey:UserID"`
 }
