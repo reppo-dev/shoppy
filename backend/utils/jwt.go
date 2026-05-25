@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"strconv"
 	"time"
 
@@ -18,15 +19,20 @@ func GenerateJwt(userId uint) (string, error) {
 	return token.SignedString([]byte(SecretKey))
 }
 
-func ParseJwt(cookie string) (string,error) {
+func ParseJwt(cookie string) (uint,error) {
 	token,err := jwt.ParseWithClaims(cookie,&jwt.StandardClaims{},func(t *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey),nil
 	})
 	if err != nil {
-		return "",err
+		return 0,err
 	}
 
-	claim := token.Claims.(*jwt.StandardClaims)
+	claims := token.Claims.(*jwt.StandardClaims)
 
-	return claim.Issuer,nil
+    userID, err := strconv.ParseUint(claims.Issuer, 10, 32)
+    if err != nil {
+        return 0, errors.New("invalid user_id in token")
+    }
+
+    return uint(userID), nil
 }
