@@ -17,3 +17,12 @@ export interface Product {
   price: number;
   user_id: number;
 }
+
+export interface Products {
+  ID: number;
+  name: string;
+  image: string;
+  description: string;
+  price: number;
+  user_id: number;
+}
