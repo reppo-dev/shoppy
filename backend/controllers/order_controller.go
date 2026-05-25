@@ -3,6 +3,7 @@ package controllers
 import (
 	"backend/databases"
 	"backend/models"
+	"backend/utils"
 	"context"
 	"time"
 
@@ -20,4 +21,39 @@ func AllOrders(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(orders)
+}
+
+func AllUserOrder(c *fiber.Ctx) error {
+    cookie := c.Cookies("jwt")
+    if cookie == "" {
+        return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+            "error": "Missing token",
+        })
+    }
+
+    userID, err := utils.ParseJwt(cookie)
+    if err != nil {
+        return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+            "error": "Invalid or expired token",
+        })
+    }
+
+    var orders []models.Order
+
+    result := databases.DB.Where("user_id = ?", userID).Preload("Items.Product").Order("created_at desc").Find(&orders)
+    
+    if result.Error != nil {
+        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+            "error": "Failed to fetch orders",
+        })
+    }
+
+    if len(orders) == 0 {
+        return c.JSON(fiber.Map{"orders": []models.Order{},"count":  0,})
+    }
+
+    return c.JSON(fiber.Map{
+        "orders": orders,
+        "count":  len(orders),
+    })
 }
