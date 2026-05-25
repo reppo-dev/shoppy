@@ -4,6 +4,7 @@ import (
 	"backend/databases"
 	"backend/models"
 	"backend/utils"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -159,4 +160,40 @@ func AddToCart(c *fiber.Ctx) error {
     return c.JSON(fiber.Map{
         "message": "Product added to cart successfully",
     })
+}
+
+func DeleteCartItem(c *fiber.Ctx) error {
+	
+    cookie := c.Cookies("jwt")
+    if cookie == "" {
+        return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+            "error": "Missing authentication token",
+        })
+    }
+
+    userID, err := utils.ParseJwt(cookie)
+    if err != nil {
+        return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+            "error": "Invalid or expired token",
+        })
+    }
+
+    if err != nil {
+        return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+            "error": "Invalid item ID",
+        })
+    }
+    var cart models.Cart
+    if err := databases.DB.Where("user_id = ?", userID).First(&cart).Error; err != nil {
+        return c.Status(404).JSON(fiber.Map{"error": "Cart not found"})
+    }
+    
+    itemID, _ := strconv.ParseUint(c.Params("id"), 10, 32)
+    result := databases.DB.Where("id = ? AND cart_id = ?", itemID, cart.ID).Delete(&models.CartItem{})
+    
+    if result.RowsAffected == 0 {
+        return c.Status(404).JSON(fiber.Map{"error": "Item not found in your cart"})
+    }
+    
+    return c.JSON(fiber.Map{"message": "Item deleted"})
 }

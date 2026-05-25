@@ -20,6 +20,7 @@ const ProductDetail = () => {
   }, []);
 
   if (!product) return <div>Loading...</div>;
+
   return (
     <div className="w-screen justify-center">
       <div className=" mt-10 mx-10">
