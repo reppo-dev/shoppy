@@ -43,6 +43,11 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Filed create user",})
 	}
 
+	cart := models.Cart{UserID: user.ID}
+	if err := databases.DB.WithContext(ctx).Create(&cart).Error;err!=nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed create cart table"})
+	}
+
 	token ,err := utils.GenerateJwt(user.ID)
 
 	if err != nil  {

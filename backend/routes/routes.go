@@ -13,7 +13,7 @@ func Setup(app *fiber.App) {
 	app.Get("/user",controllers.User)
 
 	app.Get("/allproducts",controllers.AllProducts)
-	app.Get("/getproduct/:id",controllers.GetProduct)
+	app.Get("/products/:id",controllers.GetProduct)
 	app.Post("/createproduct",controllers.CreateProduct)
 	app.Put("/updateproduct/:id",controllers.UpdateProduct)
 	app.Delete("/deleteproduct/:id",controllers.DeleteProduct)
