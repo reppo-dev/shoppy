@@ -11,9 +11,9 @@ const Header = async () => {
     <div className="px-10 w-screen py-6 flex justify-between items-center">
       <div className="flex items-center gap-5">
         <span className="uppercase font-bold">LOGO</span>
-        <Button variant={"outline"}>PRODUCTS</Button>
-        <Button>PRICING</Button>
-        <Button>BLOG</Button>
+        <Link className="hidden sm:block" href={"/products"}>
+          <Button variant={"outline"}>PRODUCTS</Button>
+        </Link>
       </div>
       <div className="flex items-center gap-5">
         <LightDarkToggle />

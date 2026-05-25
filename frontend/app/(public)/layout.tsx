@@ -14,7 +14,7 @@ export default async function RootLayout({
   return (
     <>
       <Header />
-      <main className="w-full">{children}</main>
+      <main>{children}</main>
     </>
   );
 }

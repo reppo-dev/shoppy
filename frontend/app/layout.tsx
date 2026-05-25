@@ -43,7 +43,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="w-full">{children}</main>
+          {children}
           <Toaster />
         </ThemeProvider>
       </body>

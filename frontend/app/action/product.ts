@@ -23,7 +23,7 @@ export async function allProducts() {
 
 export async function getProduct(id: number) {
   try {
-    const response = await axios.get(`${GO_API_URL}/getproduct/${id}`);
+    const response = await axios.get(`${GO_API_URL}/products/${id}`);
 
     return {
       success: true,

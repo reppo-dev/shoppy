@@ -1,16 +1,5 @@
-import CardProduct from "@/components/card-product";
-import { CreateProduct } from "@/components/create-product";
-import React from "react";
-
 const Homepage = () => {
-  return (
-    <div>
-      <CreateProduct />
-      <div className="grid grid-cols-4 mx-10">
-        <CardProduct />
-      </div>
-    </div>
-  );
+  return <div>Home Page</div>;
 };
 
 export default Homepage;
