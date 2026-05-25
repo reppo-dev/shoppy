@@ -21,6 +21,7 @@ const CardProduct = () => {
     };
     fetchProduct();
   }, []);
+
   return (
     <div>
       {product.map((pr) => (

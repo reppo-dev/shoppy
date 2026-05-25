@@ -92,29 +92,6 @@ const FormCreateProduct = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
-              Upload new image
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={uploadImage}
-              disabled={isLoading}
-            />
-            {isImagePath && (
-              <div className="mt-2">
-                <p className="text-sm text-green-600">
-                  Image uploaded successfully!
-                </p>
-                <Image
-                  src={`${isImagePath}`}
-                  alt="New"
-                  className="w-32 h-32 object-cover mt-1 rounded border"
-                />
-              </div>
-            )}
-          </div>{" "}
           <FormField
             control={form.control}
             name="image"
@@ -136,6 +113,30 @@ const FormCreateProduct = () => {
               </FormItem>
             )}
           />
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">
+              Upload new image
+            </label>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={uploadImage}
+              disabled={isLoading}
+            />
+
+            {isImagePath && (
+              <div className="mt-2">
+                <p className="text-sm text-green-600">
+                  Image uploaded successfully!
+                </p>
+                <Image
+                  src={`${isImagePath}`}
+                  alt="New"
+                  className="w-32 h-32 object-cover mt-1 rounded border"
+                />
+              </div>
+            )}
+          </div>
           <FormField
             control={form.control}
             name="name"
