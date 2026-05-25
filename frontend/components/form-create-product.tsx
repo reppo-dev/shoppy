@@ -13,11 +13,13 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldGroup } from "./ui/field";
 import { Input } from "./ui/input";
-import { useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { createProduct } from "@/app/action/product";
 import { getUserInfo } from "@/app/action/getUserId";
 import { toast } from "sonner";
+import { s3UploadAction } from "@/app/action/s3BucketAction";
+import Image from "next/image";
 
 const productSchama = z.object({
   name: z.string().min(2, "Name must 2 character"),
@@ -32,6 +34,8 @@ type FormProductSchama = z.infer<typeof productSchama>;
 const FormCreateProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<number | null>(null);
+  const [isImageAvalible, setIsImageAvalible] = useState(false);
+  const [isImagePath, setIsImagePath] = useState(``);
   const form = useForm<FormProductSchama>({
     resolver: zodResolver(productSchama),
     defaultValues: {
@@ -42,6 +46,23 @@ const FormCreateProduct = () => {
       user_id: 0,
     },
   });
+
+  const uploadImage: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.set("file", file);
+    const result = await s3UploadAction(data);
+    const fullUrl = result.imagePath as string;
+
+    if (result.success) {
+      setIsImagePath(result.imagePath!);
+      setIsImageAvalible(true);
+      form.setValue("image", fullUrl);
+    }
+  };
+
   useEffect(() => {
     const fetchUserId = async () => {
       const user = await getUserInfo();
@@ -71,6 +92,50 @@ const FormCreateProduct = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">
+              Upload new image
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={uploadImage}
+              disabled={isLoading}
+            />
+            {isImagePath && (
+              <div className="mt-2">
+                <p className="text-sm text-green-600">
+                  Image uploaded successfully!
+                </p>
+                <Image
+                  src={`${isImagePath}`}
+                  alt="New"
+                  className="w-32 h-32 object-cover mt-1 rounded border"
+                />
+              </div>
+            )}
+          </div>{" "}
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-primary">
+                  Image URL
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    disabled={isImageAvalible}
+                    placeholder="image url"
+                    {...field}
+                    className="h-11"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="name"
@@ -103,26 +168,6 @@ const FormCreateProduct = () => {
                   <Input
                     type="text"
                     placeholder="description"
-                    {...field}
-                    className="h-11"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-base font-semibold text-primary">
-                  Image URL
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="image url"
                     {...field}
                     className="h-11"
                   />
