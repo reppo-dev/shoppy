@@ -187,6 +187,9 @@ func UpdateCartItem(c *fiber.Ctx) error {
     }
 
     cartitem.Quantity = item.Quantity
+    if cartitem.Quantity <= 0 {
+        cartitem.Quantity = 1
+    }
     
 
     if err := databases.DB.WithContext(ctx).Save(&cartitem).Error; err!= nil{

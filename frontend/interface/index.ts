@@ -28,7 +28,7 @@ export interface Products {
 }
 
 export interface CartItem {
-  id: number;
+  ID: number;
   product_id: number;
   quantity: number;
   price: number;
@@ -36,7 +36,7 @@ export interface CartItem {
 }
 
 export interface Cart {
-  id: number;
+  ID: number;
   user_id: number;
   items: CartItem[];
   total?: number;
