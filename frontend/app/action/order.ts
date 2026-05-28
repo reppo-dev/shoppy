@@ -33,3 +33,18 @@ export async function alluserorder() {
     };
   }
 }
+
+export async function createorder() {
+  try {
+    await axios.post(`${GO_API_URL}/createorder`);
+    return {
+      success: true,
+      message: "success to add order",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Failed to add order",
+    };
+  }
+}
