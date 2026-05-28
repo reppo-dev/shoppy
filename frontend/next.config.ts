@@ -1,10 +1,26 @@
 const nextConfig = {
   images: {
-    domains: [
-      "sibche.com",
-      "www.webpouya.com",
-      "localhost",
-      "dkstatics-public.digikala.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "sibche.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.webpouya.com",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "dkstatics-public.digikala.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.digikala.com",
+      },
     ],
   },
   async rewrites() {

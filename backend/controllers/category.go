@@ -41,7 +41,7 @@ func GetProductsByMultipleCategories(c *fiber.Ctx) error {
 func GetCategories(c *fiber.Ctx) error {
 	ctx,cancel := context.WithTimeout(context.Background(),5*time.Second)
 	defer cancel()
-	var categories models.Category
+	var categories []models.Category
 
 	if err := databases.DB.WithContext(ctx).Find(&categories).Error; err!= nil{
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error":"Failed find categories"})

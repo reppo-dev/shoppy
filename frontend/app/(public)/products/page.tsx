@@ -1,28 +1,44 @@
-// app/action/product.ts (اضافه کردن تابع جدید)
-"use server";
+// app/products/page.tsx (یا هر جای دیگر که Products را رندر می‌کنی)
+"use client";
 
-import axios from "axios";
-import { cookies } from "next/headers";
+import { useState, useEffect } from "react";
+import CardProduct from "@/components/card-product";
+import CategoryFilter from "@/components/category-filter";
+import { getProductsByCategories } from "@/app/action/product";
+import { Products as ProductsType } from "@/interface";
+import { CreateProduct } from "@/components/create-product";
 
-const GO_API_URL = process.env.GO_API_URL;
+export default function ProductsPage() {
+  const [products, setProducts] = useState<ProductsType[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export async function getProductsByCategories(categoryIds: number[]) {
-  try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("jwt")?.value;
-    const headers: Record<string, string> = {};
-    if (token) headers.Cookie = `jwt=${token}`;
-
-    const params = new URLSearchParams();
-    if (categoryIds.length > 0) {
-      params.append("categories", categoryIds.join(","));
+  const fetchProducts = async (categoryIds: number[]) => {
+    setLoading(true);
+    const result = await getProductsByCategories(categoryIds);
+    if (result.success) {
+      setProducts(result.data);
+    } else {
+      setProducts([]);
     }
+    setLoading(false);
+  };
 
-    const url = `${GO_API_URL}/products${params.toString() ? `?${params.toString()}` : ""}`;
-    const response = await axios.get(url, { headers });
-    return { success: true, data: response.data };
-  } catch (error) {
-    console.error("getProductsByCategories error:", error);
-    return { success: false, data: [] };
-  }
+  useEffect(() => {
+    fetchProducts(selectedCategories);
+  }, [selectedCategories]);
+
+  return (
+    <div>
+      <CreateProduct />
+      <CategoryFilter onCategoryChange={setSelectedCategories} />
+      <div className="grid grid-cols-4 mx-10 gap-4">
+        {loading ? (
+          <p className="col-span-full text-center">Loading...</p>
+        ) : (
+          <CardProduct products={products} />
+        )}
+      </div>
+    </div>
+  );
 }

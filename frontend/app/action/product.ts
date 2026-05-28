@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { Product } from "@/interface";
+import { getToken } from "./token";
 
 const GO_API_URL = process.env.GO_API_URL;
 
@@ -101,15 +102,25 @@ export async function deleteProduct(id: number) {
 
 export async function getProductsByCategories(categoryIds: number[]) {
   try {
-    // تبدیل آرایه به رشته کاما جدا: [1,3,5] => "1,3,5"
-    const categoriesParam = categoryIds.join(",");
-    const response = await axios.get(`${GO_API_URL}/products`, {
-      params: { categories: categoriesParam },
-      withCredentials: true, // اگر نیاز به ارسال کوکی JWT دارید
+    const token = await getToken();
+    const headers: Record<string, string> = {};
+    if (token) headers.Cookie = `jwt=${token}`;
+
+    if (categoryIds.length === 0) {
+      const response = await axios.get(`${GO_API_URL}/products`, { headers });
+      return { success: true, data: response.data };
+    }
+
+    const params = new URLSearchParams();
+    params.append("categories", categoryIds.join(","));
+
+    const response = await axios.get(`${GO_API_URL}/getbycategory`, {
+      params,
+      headers,
     });
     return { success: true, data: response.data };
   } catch (error) {
-    console.error("Error fetching products by categories:", error);
-    return { success: false, error: "Failed to fetch" };
+    console.error("getProductsByCategories error:", error);
+    return { success: false, data: [], error: "Failed to fetch" };
   }
 }

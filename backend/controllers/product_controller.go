@@ -16,7 +16,7 @@ func AllProducts(c *fiber.Ctx) error {
 
 	var products []models.Product
 
-	if err := databases.DB.WithContext(ctx).Find(&products).Error; err!=nil{
+	if err := databases.DB.WithContext(ctx).Preload("Categories").Find(&products).Error; err!=nil{
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error":"Failed find products",
 		})
@@ -60,10 +60,16 @@ func CreateProduct(c *fiber.Ctx) error {
 		Price: data.Price,
 		UserID: data.UserID,
 	}
+	
 
 	if err := databases.DB.WithContext(ctx).Create(&product).Error;err!=nil{
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed create product"})
 	}
+	    if len(data.CategoryIDs) > 0 {
+        var categories []models.Category
+        databases.DB.Where("id IN ?", data.CategoryIDs).Find(&categories)
+        databases.DB.Model(&product).Association("Categories").Append(&categories)
+    }
 
 	return c.JSON(fiber.Map{"message":"create product success"})
 }

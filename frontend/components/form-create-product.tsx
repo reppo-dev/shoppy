@@ -20,6 +20,7 @@ import { getUserInfo } from "@/app/action/getUserId";
 import { toast } from "sonner";
 import { s3UploadAction } from "@/app/action/s3BucketAction";
 import Image from "next/image";
+import { getCategories } from "@/app/action/category";
 
 const productSchama = z.object({
   name: z.string().min(2, "Name must 2 character"),
@@ -27,6 +28,7 @@ const productSchama = z.object({
   description: z.string().min(10, "description must 10 character"),
   price: z.number().min(1, "price can't emty"),
   user_id: z.number(),
+  category_ids: z.array(z.number()).min(1, "Select at least one category"),
 });
 
 type FormProductSchama = z.infer<typeof productSchama>;
@@ -36,6 +38,18 @@ const FormCreateProduct = () => {
   const [userId, setUserId] = useState<number | null>(null);
   const [isImageAvalible, setIsImageAvalible] = useState(false);
   const [isImagePath, setIsImagePath] = useState(``);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [categories, setCategories] = useState<{ ID: number; name: string }[]>(
+    [],
+  );
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const data = await getCategories();
+      setCategories(Array.isArray(data) ? data : []);
+    };
+    fetchCategories();
+  }, []);
   const form = useForm<FormProductSchama>({
     resolver: zodResolver(productSchama),
     defaultValues: {
@@ -44,8 +58,18 @@ const FormCreateProduct = () => {
       name: "",
       price: 0,
       user_id: 0,
+      category_ids: [],
     },
   });
+
+  const handleCategoryToggle = (id: number) => {
+    setSelectedCategories((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id],
+    );
+  };
+  useEffect(() => {
+    form.setValue("category_ids", selectedCategories);
+  }, [selectedCategories, form]);
 
   const uploadImage: ChangeEventHandler<HTMLInputElement> = async (e) => {
     const file = e.target.files?.[0];
@@ -75,6 +99,7 @@ const FormCreateProduct = () => {
   async function onSubmit(data: FormProductSchama) {
     try {
       setIsLoading(true);
+
       const respunse = await createProduct(data);
       if (respunse.success) {
         toast("create product success");
@@ -177,6 +202,27 @@ const FormCreateProduct = () => {
               </FormItem>
             )}
           />
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Categories</label>
+            <div className="flex flex-wrap gap-3">
+              {categories.map((cat) => (
+                <label key={cat.ID} className="flex items-center gap-1">
+                  <Input
+                    type="checkbox"
+                    value={cat.ID}
+                    checked={selectedCategories.includes(cat.ID)}
+                    onChange={() => handleCategoryToggle(cat.ID)}
+                  />
+                  {cat.name}
+                </label>
+              ))}
+            </div>
+            {selectedCategories.length === 0 && (
+              <p className="text-sm text-red-500 mt-1">
+                Select at least one category
+              </p>
+            )}
+          </div>
           <FormField
             control={form.control}
             name="price"
@@ -200,7 +246,7 @@ const FormCreateProduct = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isLoading || userId === null}>
+          <Button type="submit">
             {isLoading ? "Creating..." : "Create product"}
           </Button>
         </FieldGroup>
