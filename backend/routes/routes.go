@@ -20,7 +20,7 @@ func Setup(app *fiber.App) {
 
 
 	app.Get("/allorders",controllers.AllOrders)
-	app.Get("/allordersusr",controllers.AllUserOrder)
+	app.Get("/alloruserders",controllers.AllUserOrder)
 	app.Post("/createorder",controllers.CreateOrder)
 
 	app.Get("/getcart",controllers.GetCart)
