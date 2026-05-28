@@ -4,7 +4,9 @@ import (
 	"backend/databases"
 	"backend/models"
 	"backend/utils"
+	"context"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -160,6 +162,40 @@ func AddToCart(c *fiber.Ctx) error {
         "message": "Product added to cart successfully",
     })
 }
+
+func UpdateCartItem(c *fiber.Ctx) error {
+    ctx,cancel := context.WithTimeout(context.Background(),5*time.Hour)
+    defer cancel()
+
+    var item struct{
+        Quantity  int `json:"quantity"`
+    }
+
+    id , err := strconv.Atoi(c.Params("id"))
+
+    if err != nil {
+        return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request id"})
+    }
+    if err := c.BodyParser(&item); err!=nil{
+        return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request body"})
+    }
+
+    var cartitem models.CartItem
+
+    if err:= databases.DB.WithContext(ctx).First(&cartitem , id).Error; err!=nil {
+        return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Failed find cart item"})
+    }
+
+    cartitem.Quantity = item.Quantity
+    
+
+    if err := databases.DB.WithContext(ctx).Save(&cartitem).Error; err!= nil{
+        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed update cart item"})
+    }
+    
+    return c.JSON(fiber.Map{"message":"success update cart item"})
+}
+
 
 func DeleteCartItem(c *fiber.Ctx) error {
 	
