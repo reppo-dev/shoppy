@@ -33,7 +33,6 @@ func GetCart(c *fiber.Ctx) error {
         First(&cart)
 
     if result.Error == gorm.ErrRecordNotFound {
-
         cart = models.Cart{UserID: userID}
         if err := databases.DB.Create(&cart).Error; err != nil {
             return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
