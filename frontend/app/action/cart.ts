@@ -35,3 +35,19 @@ export async function addToCart() {
     };
   }
 }
+
+export async function deleteCardItem() {
+  try {
+    await axios.delete(`${GO_API_URL}/deletecartitem`);
+
+    return {
+      success: true,
+      message: "success delete cart",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Failed delete cart",
+    };
+  }
+}
