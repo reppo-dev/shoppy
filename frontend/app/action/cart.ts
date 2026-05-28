@@ -19,3 +19,19 @@ export async function getCart() {
     };
   }
 }
+
+export async function addToCart() {
+  try {
+    const response = await axios.post(`${GO_API_URL}/addtocart`);
+
+    return {
+      success: true,
+      message: "success add to cart",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Failed add to cart",
+    };
+  }
+}
