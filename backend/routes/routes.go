@@ -29,4 +29,8 @@ func Setup(app *fiber.App) {
 	app.Delete("/deletecartitem/:id",controllers.DeleteCartItem)
 
 	app.Get("/getbycategory",controllers.GetProductsByMultipleCategories)
+	app.Get("/getcategories",controllers.GetCategories)
+	app.Post("/createcategory",controllers.CreateCategory)
+	app.Put("/updatecategory",controllers.UpdateCategory)
+	app.Delete("/deletecategory",controllers.DeleteCategory)
 }
