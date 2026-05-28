@@ -21,7 +21,9 @@ export async function allorder() {
 
 export async function alluserorder() {
   try {
-    const response = await axios.get(`${GO_API_URL}//alloruserders`);
+    const response = await axios.get(`${GO_API_URL}//alloruserders`, {
+      withCredentials: true,
+    });
     return {
       success: true,
       data: response.data,
@@ -36,7 +38,7 @@ export async function alluserorder() {
 
 export async function createorder() {
   try {
-    await axios.post(`${GO_API_URL}/createorder`);
+    await axios.post(`${GO_API_URL}/createorder`, { withCredentials: true });
     return {
       success: true,
       message: "success to add order",

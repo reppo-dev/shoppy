@@ -6,7 +6,9 @@ const GO_API_URL = process.env.GO_API_URL;
 
 export async function getCart() {
   try {
-    const response = await axios.get(`${GO_API_URL}/getcart`);
+    const response = await axios.get(`${GO_API_URL}/getcart`, {
+      withCredentials: true,
+    });
 
     return {
       success: true,
@@ -20,13 +22,20 @@ export async function getCart() {
   }
 }
 
-export async function addToCart() {
+export async function addToCart(productId: number, quantity: number = 1) {
   try {
-    const response = await axios.post(`${GO_API_URL}/addtocart`);
+    const response = await axios.post(
+      `${GO_API_URL}/addtocart`,
+      {
+        product_id: productId,
+        quantity,
+      },
+      { withCredentials: true },
+    );
 
     return {
       success: true,
-      message: "success add to cart",
+      message: response.data.message || "Added to cart",
     };
   } catch {
     return {
@@ -38,7 +47,9 @@ export async function addToCart() {
 
 export async function deleteCardItem() {
   try {
-    await axios.delete(`${GO_API_URL}/deletecartitem`);
+    await axios.delete(`${GO_API_URL}/deletecartitem`, {
+      withCredentials: true,
+    });
 
     return {
       success: true,
