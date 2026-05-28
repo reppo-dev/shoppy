@@ -20,5 +20,5 @@ func Connect() {
 
 	DB = db
 
-	db.AutoMigrate(&models.User{},&models.Product{},&models.Order{},&models.OrderItem{},&models.Cart{},&models.CartItem{})
+	db.AutoMigrate(&models.User{},&models.Product{},&models.Order{},&models.OrderItem{},&models.Cart{},&models.CartItem{},&models.Category{}, &models.Product{})
 }

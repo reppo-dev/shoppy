@@ -10,6 +10,7 @@ type Product struct {
 	Price float64 `json:"price"`
     UserID      uint    `json:"user_id"`
     User        User    `json:"user" gorm:"foreignKey:UserID"`
+	Categories  []Category `json:"categories,omitempty" gorm:"many2many:product_categories;"`
 }
 
 
@@ -19,4 +20,5 @@ type ProductInfo struct {
 	Description string `json:"description"`
 	Price float64 `json:"price"`
     UserID      uint    `json:"user_id"`
+	CategoryIDs []uint   `json:"category_ids"`
 }

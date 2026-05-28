@@ -82,7 +82,7 @@ export default function CartClient({ initialCart }: CartClientProps) {
           {cart.items.map((item) => (
             <Card key={item.ID}>
               <CardContent className="flex flex-col sm:flex-row gap-4 p-4">
-                <div className="w-24 h-24 relative bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                <div className="w-24 h-24 relative bg-gray-100 rounded-md overflow-hidden shrink-0">
                   <Image
                     src={item.product.image || "/placeholder.jpg"}
                     alt={item.product.name}
