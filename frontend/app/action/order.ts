@@ -18,3 +18,18 @@ export async function allorder() {
     };
   }
 }
+
+export async function alluserorder() {
+  try {
+    const response = await axios.get(`${GO_API_URL}//alloruserders`);
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Failed to get all orders",
+    };
+  }
+}
