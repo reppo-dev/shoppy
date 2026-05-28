@@ -48,5 +48,30 @@ func GetCategories(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(categories)
-
 }
+
+func CreateCategory(c *fiber.Ctx) error {
+	ctx,cancel:= context.WithTimeout(context.Background(),5*time.Second)
+	defer cancel()
+
+	var cat models.CategoryInfo
+
+	if err := c.BodyParser(&cat); err != nil{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request body"})
+	}
+
+	category := models.Category{
+		Name: cat.Name,
+		Description: cat.Description,
+		Slug: cat.Slug,
+	}
+
+	if err := databases.DB.WithContext(ctx).Create(&category).Error; err != nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed craete category"})
+	}
+
+	return c.JSON(fiber.Map{
+		"message":"success create category",
+	})
+}
+
