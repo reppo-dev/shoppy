@@ -1,6 +1,7 @@
+// components/card-product.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { Products } from "@/interface";
 import {
   Card,
   CardContent,
@@ -9,35 +10,32 @@ import {
   CardTitle,
 } from "./ui/card";
 import Image from "next/image";
-import { allProducts } from "@/app/action/product";
-import { Products } from "@/interface";
 import Link from "next/link";
 import { addToCart } from "@/app/action/cart";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 
-const CardProduct = () => {
-  const [product, setProduct] = useState<Products[]>([]);
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const response = await allProducts();
-      setProduct(response.data);
-    };
-    fetchProduct();
-  }, []);
+interface CardProductProps {
+  products: Products[];
+}
 
+const CardProduct = ({ products }: CardProductProps) => {
   const handleAddToCart = async (productId: number) => {
     const result = await addToCart(productId, 1);
     if (result.success) {
-      toast("Added!");
+      toast.success("Added to cart!");
     } else {
-      toast(result.success);
+      toast.error(result.message || "Failed to add");
     }
   };
 
+  if (!products.length) {
+    return <p className="col-span-full text-center">No products found.</p>;
+  }
+
   return (
-    <div>
-      {product.map((pr) => (
+    <>
+      {products.map((pr) => (
         <Card key={pr.ID}>
           <Link href={`/products/${pr.ID}`}>
             <CardHeader>
@@ -60,7 +58,7 @@ const CardProduct = () => {
           </CardContent>
         </Card>
       ))}
-    </div>
+    </>
   );
 };
 

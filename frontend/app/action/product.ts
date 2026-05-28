@@ -98,3 +98,18 @@ export async function deleteProduct(id: number) {
     };
   }
 }
+
+export async function getProductsByCategories(categoryIds: number[]) {
+  try {
+    // تبدیل آرایه به رشته کاما جدا: [1,3,5] => "1,3,5"
+    const categoriesParam = categoryIds.join(",");
+    const response = await axios.get(`${GO_API_URL}/products`, {
+      params: { categories: categoriesParam },
+      withCredentials: true, // اگر نیاز به ارسال کوکی JWT دارید
+    });
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error fetching products by categories:", error);
+    return { success: false, error: "Failed to fetch" };
+  }
+}
