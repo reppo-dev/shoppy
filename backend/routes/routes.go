@@ -25,5 +25,5 @@ func Setup(app *fiber.App) {
 
 	app.Get("/getcart",controllers.GetCart)
 	app.Post("/addtocart",controllers.AddToCart)
-	app.Delete("/deletecartitem",controllers.DeleteCartItem)
+	app.Delete("/deletecartitem/:id",controllers.DeleteCartItem)
 }

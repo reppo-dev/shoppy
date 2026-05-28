@@ -1,10 +1,13 @@
 "use client";
 
+import { addToCart } from "@/app/action/cart";
 import { getProduct } from "@/app/action/product";
+import { Button } from "@/components/ui/button";
 import { Products } from "@/interface";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const ProductDetail = () => {
   const params = useParams();
@@ -20,6 +23,15 @@ const ProductDetail = () => {
   }, []);
 
   if (!product) return <div>Loading...</div>;
+
+  const handleAddToCart = async (productId: number) => {
+    const result = await addToCart(productId, 1);
+    if (result.success) {
+      toast("Added!");
+    } else {
+      toast(result.success);
+    }
+  };
 
   return (
     <div className="w-screen justify-center">
@@ -43,6 +55,9 @@ const ProductDetail = () => {
           <div className="border h-10 items-center rounded-md flex w-fit pr-2">
             <span className="ml-2 font-semibold">Price: ${product.price}</span>
           </div>
+          <Button onClick={() => handleAddToCart(product.ID)}>
+            Add To Cart
+          </Button>
         </div>
       </div>
     </div>
