@@ -106,3 +106,27 @@ func UpdateCategory(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"message":"success update category"})
 
 }
+
+func DeleteCategory(c *fiber.Ctx) error {
+	ctx,cancel := context.WithTimeout(context.Background(),5*time.Second)
+	defer cancel()
+
+	id , err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request id"})
+	}
+
+	var category models.Category
+
+	if err := databases.DB.WithContext(ctx).First(&category,id).Error; err!= nil{
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error":"Failed found category"})
+	}
+
+	if err := databases.DB.WithContext(ctx).Delete(&category).Error; err !=nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed delete category"})
+	}
+
+	return c.JSON(fiber.Map{
+		"message":"success delete catefory",
+	})
+}
