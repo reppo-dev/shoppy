@@ -4,8 +4,7 @@ import type { NextRequest } from "next/server";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isPrivateRoute =
-    pathname.startsWith("/favorite") || pathname.startsWith("/admin");
+  const isPrivateRoute = pathname.startsWith("/cart");
 
   const isAuthRoute =
     pathname.startsWith("/login") || pathname.startsWith("/signup");

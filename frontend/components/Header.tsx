@@ -8,37 +8,46 @@ import Link from "next/link";
 const Header = async () => {
   const token = await getToken();
   return (
-    <div className="px-10 w-screen py-6 flex justify-between items-center">
-      <div className="flex items-center gap-5">
-        <span className="uppercase font-bold">LOGO</span>
-        <Link className="hidden sm:block" href={"/products"}>
-          <Button variant={"outline"}>PRODUCTS</Button>
-        </Link>
-        <Link className="hidden sm:block" href={"/cart"}>
-          <Button variant={"outline"}>CART</Button>
-        </Link>
-      </div>
-      <div className="flex items-center gap-5">
-        <LightDarkToggle />
-        {token ? (
-          <>
-            <ButtonLogout />
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>LG</AvatarFallback>
-              <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-            </Avatar>
-          </>
-        ) : (
-          <>
-            <Link href={"/login"}>
-              <Button variant={"outline"}>Login</Button>
-            </Link>
-            <Link href={"/signup"}>
-              <Button>Sign up</Button>
-            </Link>
-          </>
-        )}
+    <div className="w-full max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-5">
+          <Link href={"/"} className="uppercase font-bold">
+            LOGO
+          </Link>
+          <Link className="hidden sm:block" href={"/products"}>
+            <Button variant={"outline"}>PRODUCTS</Button>
+          </Link>
+          <Link className="hidden sm:block" href={"/cart"}>
+            <Button variant={"outline"}>CART</Button>
+          </Link>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <LightDarkToggle />
+          {token ? (
+            <>
+              <ButtonLogout />
+              <Link href="/profile">
+                <Avatar>
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>LG</AvatarFallback>
+                  <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+                </Avatar>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href={"/login"}>
+                <Button variant={"outline"}>Login</Button>
+              </Link>
+              <Link href={"/signup"}>
+                <Button>Sign up</Button>
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

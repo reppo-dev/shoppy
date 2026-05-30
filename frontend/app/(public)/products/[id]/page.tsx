@@ -20,7 +20,7 @@ const ProductDetail = () => {
       setProduct(product.data);
     };
     fetchProduct();
-  }, []);
+  }, [productId]);
 
   if (!product) return <div>Loading...</div>;
 
@@ -34,8 +34,8 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="w-screen justify-center">
-      <div className=" mt-10 mx-10">
+    <div className="w-full flex justify-center px-4 sm:px-6 lg:px-8">
+      <div className="mt-10 w-full max-w-5xl mx-auto">
         <Image
           className="rounded-sm"
           src={product.image}
