@@ -147,6 +147,7 @@ func AddToCart(c *fiber.Ctx) error {
             Quantity:  req.Quantity,
             Price:     product.Price,
         }
+
         if err := databases.DB.Create(&newItem).Error; err != nil {
             return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
                 "error": "Failed to add to cart",
@@ -221,6 +222,7 @@ func DeleteCartItem(c *fiber.Ctx) error {
             "error": "Invalid item ID",
         })
     }
+
     var cart models.Cart
     if err := databases.DB.Where("user_id = ?", userID).First(&cart).Error; err != nil {
         return c.Status(404).JSON(fiber.Map{"error": "Cart not found"})

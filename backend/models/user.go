@@ -12,5 +12,3 @@ type User struct {
 	Products  []Product `json:"products,omitempty" gorm:"foreignKey:UserID"`
     Orders 	  []Order 	`json:"orders,omitempty"`
 }
-
-

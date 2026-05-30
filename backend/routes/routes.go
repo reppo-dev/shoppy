@@ -33,4 +33,6 @@ func Setup(app *fiber.App) {
 	app.Post("/createcategory",controllers.CreateCategory)
 	app.Put("/updatecategory",controllers.UpdateCategory)
 	app.Delete("/deletecategory",controllers.DeleteCategory)
+
+	app.Get("/search", controllers.SearchProducts)
 }

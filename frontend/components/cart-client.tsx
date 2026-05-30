@@ -100,7 +100,7 @@ export default function CartClient({ initialCart }: CartClientProps) {
                     {item.product.description}
                   </p>
                   <p className="text-sm font-medium mt-1">
-                    {item.price.toLocaleString()} T each
+                    ${item.price.toLocaleString()}
                   </p>
 
                   <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
