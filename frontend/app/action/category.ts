@@ -1,7 +1,7 @@
 "use server";
 
 import axios from "axios";
-import { getToken } from "./token";
+import { allProducts } from "./product";
 
 const GO_API_URL = process.env.GO_API_URL;
 
@@ -17,23 +17,18 @@ export async function getCategories() {
 }
 
 export async function getProductsByCategories(categoryIds: number[]) {
-  try {
-    const token = await getToken();
-    const headers: Record<string, string> = {};
-    if (token) headers.Cookie = `jwt=${token}`;
-
-    const params = new URLSearchParams();
-    if (categoryIds.length > 0) {
-      params.append("categories", categoryIds.join(","));
-    }
-
-    const response = await axios.get(
-      `${GO_API_URL}/getbycategory${params.toString() ? `?${params.toString()}` : ""}`,
-      { headers },
-    );
+  const params = new URLSearchParams();
+  if (categoryIds.length === 0) {
+    const response = await allProducts();
     return { success: true, data: response.data };
-  } catch (error) {
-    console.error("getProductsByCategories error:", error);
-    return { success: false, data: [] };
   }
+
+  if (categoryIds.length > 0) {
+    params.append("categories", categoryIds.join(","));
+  }
+
+  const response = await axios.get(
+    `${GO_API_URL}/getbycategory${params.toString() ? `?${params.toString()}` : ""}`,
+  );
+  return { success: true, data: response.data };
 }

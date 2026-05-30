@@ -1,4 +1,3 @@
-// app/products/page.tsx (یا هر جای دیگر که Products را رندر می‌کنی)
 "use client";
 
 import { useState, useEffect } from "react";
