@@ -136,3 +136,42 @@ func User(c *fiber.Ctx) error {
 
 	return c.JSON(user)
 }
+
+func UpdateUser(c *fiber.Ctx) error {
+	ctx , cancel := context.WithTimeout(context.Background(),5*time.Second)
+	defer cancel()
+
+	cookie := c.Cookies("jwt")
+
+	if cookie == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid jwt token"})
+	}
+
+	userId , err := utils.ParseJwt(cookie)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed parse cookie"})
+	}
+
+	var data models.UserInfo
+
+	if err := c.BodyParser(&data); err!=nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request body"})
+	}
+	var user models.User
+
+	if err:= databases.DB.WithContext(ctx).First(&user,userId).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error":"Failed found user"})
+	}
+
+	user.FirstName = data.FirstName
+	user.LastName = data.LastName
+	user.Email = data.Email
+	user.Image = data.Image
+
+	if err := databases.DB.WithContext(ctx).Save(&user).Error; err !=nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed update user"})
+	}
+
+	return c.JSON(fiber.Map{"message":"success update user"})
+}

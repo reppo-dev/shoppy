@@ -35,4 +35,5 @@ func Setup(app *fiber.App) {
 	app.Delete("/deletecategory",controllers.DeleteCategory)
 
 	app.Get("/search", controllers.SearchProducts)
+	app.Put("/updateuser",controllers.UpdateUser)
 }

@@ -13,3 +13,11 @@ type User struct {
 	Products  []Product `json:"products,omitempty" gorm:"foreignKey:UserID"`
     Orders 	  []Order 	`json:"orders,omitempty"`
 }
+
+type UserInfo struct {
+	UserName  string 	`json:"user_name"`
+	FirstName string 	`json:"first_name"`
+	Image     string    `json:"image"`
+	LastName  string 	`json:"last_name"`
+	Email     string 	`json:"email"`
+}
