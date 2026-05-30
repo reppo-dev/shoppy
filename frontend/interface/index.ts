@@ -41,3 +41,11 @@ export interface Cart {
   items: CartItem[];
   total?: number;
 }
+
+export interface User {
+  user_name: string;
+  first_name: string;
+  last_name: string;
+  image: string;
+  email: string;
+}

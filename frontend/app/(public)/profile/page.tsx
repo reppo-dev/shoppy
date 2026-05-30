@@ -8,17 +8,11 @@ import {
 } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-interface UserProfile {
-  user_name: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  image: string;
-}
+import { User } from "@/interface";
 
 const ProfilePage = async () => {
-  const user = await getInfoUser();
+  const userInfi = await getInfoUser();
+  const user: User = userInfi.data;
 
   return (
     <div className="flex justify-center items-center">
@@ -32,10 +26,10 @@ const ProfilePage = async () => {
         </CardHeader>
         <CardContent className="h-auto">
           <h1 className="text-lg font-bold text-gray-500">
-            name: {user.first_name} {user.last_name}
+            name: {user?.first_name} {user?.last_name}
           </h1>
-          <p className="text-gray-500 mt-1">user name: {user.user_name}</p>
-          <p className="text-gray-500 mt-2">email: {user.email}</p>
+          <p className="text-gray-500 mt-1">user name: {user?.user_name}</p>
+          <p className="text-gray-500 mt-2">email: {user?.email}</p>
           <Link href="/profile/edit">
             <Button className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
               Edit Profile
