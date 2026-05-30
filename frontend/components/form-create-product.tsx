@@ -157,6 +157,8 @@ const FormCreateProduct = () => {
                 <Image
                   src={`${isImagePath}`}
                   alt="New"
+                  width={32}
+                  height={32}
                   className="w-32 h-32 object-cover mt-1 rounded border"
                 />
               </div>

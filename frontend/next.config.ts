@@ -21,6 +21,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "www.digikala.com",
       },
+      {
+        protocol: "https",
+        hostname: "c675240.parspack.net",
+      },
     ],
   },
   async rewrites() {
