@@ -34,7 +34,7 @@ A full-stack e-commerce application with a Next.js frontend and a Go backend, fe
 
 ### Home Page
 
-<img src="./screenshots/home.png" width="250"/> <img src="./screenshots/login.png" width="250"/> <img src="./screenshots/signup.png" width="250"/>
+<p align="center"><img src="./screenshots/home.png" width="30%"/> <img src="./screenshots/login.png" width="30%"/> <img src="./screenshots/signup.png" width="30%"/></p>
 
 ### Products
 
