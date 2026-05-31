@@ -42,7 +42,11 @@ A full-stack e-commerce application with a Next.js frontend and a Go backend, fe
 
 ### Cart
 
-<img src="./screenshots/cart.png" width="250"/> <img src="./screenshots/profile.png" width="250"/> <img src="./screenshots/edit-profile.png" width="250"/>
+<img src="./screenshots/cart.png" width="250"/>
+
+### Profile
+
+<img src="./screenshots/profile.png" width="250"/> <img src="./screenshots/edit-profile.png" width="250"/>
 
 ### Create Product
 
