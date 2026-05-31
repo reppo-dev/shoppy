@@ -17,9 +17,11 @@ const Header = async () => {
           <Link className="hidden sm:block" href={"/products"}>
             <Button variant={"outline"}>PRODUCTS</Button>
           </Link>
-          <Link className="hidden sm:block" href={"/cart"}>
-            <Button variant={"outline"}>CART</Button>
-          </Link>
+          {token && (
+            <Link className="hidden sm:block" href={"/cart"}>
+              <Button variant={"outline"}>CART</Button>
+            </Link>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-4">
           <LightDarkToggle />
