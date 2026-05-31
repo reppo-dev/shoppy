@@ -168,6 +168,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	user.LastName = data.LastName
 	user.Email = data.Email
 	user.Image = data.Image
+	user.UserName = data.UserName
 
 	if err := databases.DB.WithContext(ctx).Save(&user).Error; err !=nil{
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error":"Failed update user"})

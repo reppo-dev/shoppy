@@ -12,7 +12,7 @@ export const CreateProduct = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="absolute left-10 bottom-10">
+        <div className="fixed left-10 bottom-10">
           <div className="rounded-full bg-blue-600 w-10 h-10 items-center flex justify-center">
             <Plus />
           </div>

@@ -19,7 +19,7 @@ const ProfilePage = async () => {
       <Card className="w-xl">
         <CardHeader className="justify-center items-center">
           <Avatar className="w-32 h-32">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src={user.image} alt="Profile" />
             <AvatarFallback>LG</AvatarFallback>
             <AvatarBadge className="bg-green-600 dark:bg-green-800" />
           </Avatar>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,8 +17,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { User } from "@/interface";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getInfoUser, updateUser } from "@/app/action/user";
+import { s3UploadAction } from "@/app/action/s3BucketAction";
+import Image from "next/image";
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 
 const formSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
@@ -35,6 +43,8 @@ export default function EditProfilePage() {
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [serverError, setServerError] = useState("");
+  const [isImagePath, setIsImagePath] = useState(``);
+  const [initialImage, setInitialImage] = useState("");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -59,8 +69,9 @@ export default function EditProfilePage() {
         console.log(user.first_name);
         setValue("last_name", user.last_name);
         setValue("email", user.email);
-        setValue("image", user.email);
+        setValue("image", user.image);
         setValue("user_name", user.user_name);
+        setInitialImage(user.image || "");
       } else {
         setServerError(result.message || "Failed to fetch user data");
       }
@@ -68,6 +79,21 @@ export default function EditProfilePage() {
     };
     fetchUser();
   }, [setValue]);
+
+  const uploadImage: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.set("file", file);
+    const result = await s3UploadAction(data);
+    const fullUrl = result.imagePath as string;
+
+    if (result.success) {
+      setIsImagePath(result.imagePath!);
+      form.setValue("image", fullUrl);
+    }
+  };
 
   async function onSubmit(values: FormValues) {
     setLoading(true);
@@ -92,8 +118,14 @@ export default function EditProfilePage() {
 
   return (
     <Card className="max-w-md mx-auto ">
-      <CardHeader className="text-2xl font-bold mb-6 text-center">
-        Edit Profile
+      <CardHeader className="text-2xl justify-center font-bold mb-6 text-center">
+        <Avatar className="w-32 h-32">
+          {isImagePath || initialImage ? (
+            <AvatarImage src={isImagePath || initialImage} alt="Profile" />
+          ) : null}
+          <AvatarFallback>LG</AvatarFallback>
+          <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+        </Avatar>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -114,7 +146,6 @@ export default function EditProfilePage() {
               )}
             />
 
-            {/* First Name */}
             <FormField
               control={form.control}
               name="first_name"
@@ -131,7 +162,6 @@ export default function EditProfilePage() {
               )}
             />
 
-            {/* Last Name */}
             <FormField
               control={form.control}
               name="last_name"
@@ -148,7 +178,6 @@ export default function EditProfilePage() {
               )}
             />
 
-            {/* Email */}
             <FormField
               control={form.control}
               name="email"
@@ -170,35 +199,32 @@ export default function EditProfilePage() {
               )}
             />
 
-            {/* Image URL (اختیاری) */}
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base font-semibold text-primary">
-                    Profile Image URL
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com/avatar.jpg"
-                      {...field}
-                      className="h-11"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">
+                Upload new image
+              </label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={uploadImage}
+                disabled={loading}
+              />
 
-            {/* خطای سرور */}
+              {isImagePath && (
+                <div className="mt-2">
+                  <p className="text-sm text-green-600">
+                    Image uploaded successfully!
+                  </p>
+                </div>
+              )}
+            </div>
+
             {serverError && (
               <div className="rounded-md bg-red-50 p-3 text-sm font-medium text-red-700">
                 {serverError}
               </div>
             )}
 
-            {/* دکمه‌ها */}
             <div className="flex flex-col space-y-3 pt-2">
               <Button type="submit" disabled={loading}>
                 {loading ? (

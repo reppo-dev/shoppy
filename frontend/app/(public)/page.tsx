@@ -5,7 +5,7 @@ const Homepage = async () => {
   const token = await getToken();
 
   return (
-    <main className="min-h-screen px-6 py-12">
+    <main className=" px-6 py-12">
       <section className="mx-auto max-w-5xl">
         <div className="rounded-3xl border border-white/10 bg-white/5 p-10 shadow-xl shadow-slate-950/20 backdrop-blur-xl">
           <div className="space-y-8 text-center">

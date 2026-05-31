@@ -129,7 +129,7 @@ export default function CartClient({ initialCart }: CartClientProps) {
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="font-semibold">
-                        {(item.price * item.quantity).toLocaleString()} T
+                        ${(item.price * item.quantity).toLocaleString()}
                       </span>
                       <Button
                         variant="ghost"

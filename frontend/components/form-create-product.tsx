@@ -50,6 +50,7 @@ const FormCreateProduct = () => {
     };
     fetchCategories();
   }, []);
+
   const form = useForm<FormProductSchama>({
     resolver: zodResolver(productSchama),
     defaultValues: {
