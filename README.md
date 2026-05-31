@@ -62,8 +62,8 @@ _(Replace the paths above with your actual screenshots)_
 
 ### Prerequisites
 
-- Node.js 18+ and pnpm
-- Go 1.21+
+- Node.js 22+ and pnpm
+- Go 1.25+
 - PostgreSQL database
 - AWS S3 bucket (or compatible storage)
 
