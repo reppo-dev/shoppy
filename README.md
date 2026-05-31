@@ -34,23 +34,27 @@ A full-stack e-commerce application with a Next.js frontend and a Go backend, fe
 
 ### Home Page
 
-<p align="center"><img src="./screenshots/home.png" width="30%"/> <img src="./screenshots/login.png" width="30%"/> <img src="./screenshots/signup.png" width="30%"/></p>
+<p align="center"><img src="./screenshots/home.png" width="90%"/> </p>
+
+### Login , Sign up
+
+<p align="center"><img src="./screenshots/login.png" width="45%"/> <img src="./screenshots/signup.png" width="45%"/></p>
 
 ### Products
 
-<img src="./screenshots/products-list.png" width="250"/> <img src="./screenshots/products-search.png" width="250"/> <img src="./screenshots/products-category.png" width="250"/>
+<img src="./screenshots/products-list.png" width="30%"/> <img src="./screenshots/products-search.png" width="30%"/> <img src="./screenshots/products-category.png" width="30%"/>
 
 ### Cart
 
-<img src="./screenshots/cart.png" width="250"/>
+<img src="./screenshots/cart.png" width="90%"/>
 
 ### Profile
 
-<img src="./screenshots/profile.png" width="250"/> <img src="./screenshots/edit-profile.png" width="250"/>
+<img src="./screenshots/profile.png" width="45%"/> <img src="./screenshots/edit-profile.png" width="45%"/>
 
 ### Create Product
 
-<img src="./screenshots/create-product.png" width="250"/>
+<img src="./screenshots/create-product.png" width="90%"/>
 
 _(Replace the paths above with your actual screenshots)_
 
