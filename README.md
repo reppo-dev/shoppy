@@ -71,15 +71,15 @@ _(Replace the paths above with your actual screenshots)_
 
 **Frontend** (create a `.env` file in the frontend folder):
 
-GO_API_URL="http://localhost:8000"
-JWT_SECRET=secret
+- GO_API_URL="http://localhost:8000"
+- JWT_SECRET=secret
 
-PARSPACK_ACCESS_KEY=your_access_key
-PARSPACK_SECRET_KEY=your_secret_key
-PARSPACK_ENDPOINT=your_endpoint
-PARSPACK_BUCKET_NAME=c675240
-PARSPACK_REGION=your_bucket
-PARSPACK_S3_PATH_STYLE=true
+- PARSPACK_ACCESS_KEY=your_access_key
+- PARSPACK_SECRET_KEY=your_secret_key
+- PARSPACK_ENDPOINT=your_endpoint
+- PARSPACK_BUCKET_NAME=c675240
+- PARSPACK_REGION=your_bucket
+- PARSPACK_S3_PATH_STYLE=true
 
 ### Installation & Running
 
@@ -90,27 +90,28 @@ PARSPACK_S3_PATH_STYLE=true
    ```
 
 Backend
-
+```bash
 cd backend
 go mod tidy
 go run main.go
+```
 
 Frontend
-
+```bash
 cd frontend
 pnpm install
 pnpm dev
-
-shoppy/
-├── frontend/ # Next.js app
-│ ├── app/
-│ ├── components/
-│ ├── lib/
-│ └── ...
-├── backend/ # Go Fiber app
-│ ├── main.go
-│ ├── handlers/
-│ ├── models/
-│ ├── routes/
-│ └── ...
-└── screenshots/ # App screenshots
+```
+- shoppy/
+- ├── frontend/ # Next.js app
+- │ ├── app/
+- │ ├── components/
+- │ ├── lib/
+- │ └── ...
+- ├── backend/ # Go Fiber app
+- │ ├── main.go
+- │ ├── handlers/
+- │ ├── models/
+- │ ├── routes/
+- │ └── ...
+- └── screenshots/ # App screenshots
